@@ -5,13 +5,12 @@
 # But, In case of contact merge during prechat form contact update.
 # We don't want to update the name of the identified original contact.
 
-module Actions
-  class ContactIdentifyAction
-    include UrlHelper
-    pattr_initialize [:contact!, :params!, { retain_original_contact_name: false, discard_invalid_attrs: false }]
+class ContactIdentifyAction
+  include UrlHelper
+  pattr_initialize [:contact!, :params!, { retain_original_contact_name: false, discard_invalid_attrs: false }]
 
-    def perform
-      @attributes_to_update = [:identifier, :name, :email, :phone_number]
+  def perform
+    @attributes_to_update = [:identifier, :name, :email, :phone_number]
 
     ActiveRecord::Base.transaction do
       merge_if_existing_identified_contact
@@ -137,5 +136,4 @@ module Actions
 
     (@contact.additional_attributes || {}).deep_merge(params[:additional_attributes].stringify_keys)
   end
-end
 end
