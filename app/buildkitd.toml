@@ -1,0 +1,32 @@
+root = "/var/lib/buildkit"
+
+[grpc]
+address = [ "tcp://127.0.0.1:1234" ]
+
+[dns]
+nameservers = [
+  "8.8.8.8",
+  "8.8.4.4",
+  "1.1.1.1",
+  "1.0.0.1",
+  "9.9.9.9",
+  "149.112.112.112"
+]
+
+[registry."docker.io"]
+mirrors = [ "http://192.168.127.1:5000" ]
+http = true
+insecure = true
+
+[registry."192.168.127.1:5000"]
+http = true
+insecure = true
+
+[worker.oci]
+enabled = true
+gc = false
+max-parallelism = 8
+snapshotter = "overlayfs"
+
+[worker.containerd]
+enabled = false

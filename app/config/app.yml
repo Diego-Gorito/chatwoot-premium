@@ -1,0 +1,14 @@
+shared: &shared
+  version: '4.11.1-fazer-ai-pro.47'
+
+development:
+  <<: *shared
+
+production:
+  <<: *shared
+
+staging:
+  <<: *shared
+
+test:
+  <<: *shared
