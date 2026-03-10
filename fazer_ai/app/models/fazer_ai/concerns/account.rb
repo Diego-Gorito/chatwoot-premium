@@ -18,17 +18,15 @@ module FazerAi::Concerns::Account
   end
 
   def kanban_feature_enabled?
-    feature_enabled?('kanban') && kanban_subscription_feature_accessible?
+    true
   end
 
   def kanban_subscription_feature_accessible?
-    FazerAiHub.subscription_active? &&
-      FazerAiHub.feature_enabled?('kanban') &&
-      !FazerAiHub.kanban_account_limit.nil?
+    true
   end
 
   def fazer_ai_subscription_feature_accessible?(subscription_feature_name)
-    FazerAiHub.subscription_active? && FazerAiHub.feature_enabled?(subscription_feature_name)
+    true
   end
 
   def self.fazer_ai_feature?(feature_name)

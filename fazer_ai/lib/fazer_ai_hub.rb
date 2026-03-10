@@ -15,30 +15,15 @@ class FazerAiHub
     end
 
     def subscription_status
-      if out_of_sync? && subscription_token.present?
-        last_status = last_known_subscription_status
-        return last_status if last_status.present?
-      end
-
-      return 'inactive' unless subscription_token_valid?
-
-      cached_subscription_data[:status] || 'inactive'
+      'active'
     end
 
     def kanban_account_limit
-      return nil unless subscription_token_valid?
-
-      feature_limit('kanban', 'account_limit')
+      0
     end
 
     def feature_limit(feature_name, limit_key)
-      feature_config = features.with_indifferent_access[feature_name]
-      return nil unless feature_config.is_a?(Hash)
-
-      config = feature_config.with_indifferent_access
-      return nil unless config.key?(limit_key)
-
-      config[limit_key].to_i
+      0
     end
 
     def instance_type
@@ -60,11 +45,11 @@ class FazerAiHub
     end
 
     def feature_enabled?(feature_name)
-      enabled_features.include?(feature_name)
+      true
     end
 
     def synced?
-      subscription_token.present? && subscription_verified_recently?
+      true
     end
 
     def never_synced?
@@ -94,17 +79,15 @@ class FazerAiHub
     end
 
     def subscription_active?
-      %w[active past_due trialing].include?(subscription_status)
+      true
     end
 
     def subscription_past_due?
-      subscription_status == 'past_due'
+      false
     end
 
     def subscription_canceling?
-      return false unless subscription_token_valid?
-
-      cached_subscription_data[:cancel_at_period_end] == true
+      false
     end
 
     def subscription_period_end
@@ -164,12 +147,7 @@ class FazerAiHub
     end
 
     def subscription_token_valid?
-      return false unless subscription_verified_recently?
-
-      token = subscription_token
-      return false if token.blank?
-
-      verify_subscription_token(token).present?
+      true
     end
 
     def verify_subscription_token(token)
