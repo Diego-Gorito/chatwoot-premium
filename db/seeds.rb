@@ -127,7 +127,7 @@ unless Rails.env.production?
   ]
 
   steps = step_definitions.each_with_index.to_h do |attrs, index|
-    step = kanban_board.steps.create!(attrs.merge(position: index))
+    step = kanban_board.steps.create!(attrs)
     [attrs[:name], step]
   end
 
@@ -158,12 +158,12 @@ unless Rails.env.production?
       account: account,
       board_step: attributes[:board_step] || steps['New Lead'],
       creator: user,
-      assigned_agent: agent_user,
+      assigned_agents: [agent_user],
       title: attributes[:title],
       description: attributes[:description],
       priority: attributes[:priority],
       start_date: attributes[:start_date],
-      end_date: attributes[:end_date]
+      due_date: attributes[:end_date]
     )
 
     contact = contact_inbox.contact
